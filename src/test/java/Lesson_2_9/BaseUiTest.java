@@ -27,7 +27,6 @@ public class BaseUiTest {
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
-        // options.addArguments("--headless=new"); // включай в CI
 
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, UI_TIMEOUT);
@@ -40,7 +39,6 @@ public class BaseUiTest {
         }
     }
 
-    /* =================== helpers =================== */
 
     protected WebElement scrollToVisible(By locator) {
         WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -64,13 +62,11 @@ public class BaseUiTest {
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
     }
 
-    /** Клик по кастомному селекту и выбор опции по тексту */
     protected void selectFromCustomDropdown(WebElement dropdownRoot, String optionText) {
         WebElement header = dropdownRoot.findElement(By.xpath(".//*[contains(@class,'select__current') or contains(@class,'select__header')]"));
         scrollIntoCenter(header);
         header.click();
 
-        // часто опции рисуются поверх в общем контейнере
         By option = By.xpath("//p[contains(@class,'select__option') and normalize-space()='" + optionText + "']");
         WebElement opt = wait.until(ExpectedConditions.visibilityOfElementLocated(option));
         jsClick(opt);
@@ -78,10 +74,8 @@ public class BaseUiTest {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(option));
     }
 
-    /** Закрыть баннер cookies (OneTrust и «cookie show») */
     protected void acceptCookiesIfShown() {
         try {
-            // 1) OneTrust
             By onetrustBtn = By.id("onetrust-accept-btn-handler");
             if (!driver.findElements(onetrustBtn).isEmpty()) {
                 WebElement accept = driver.findElement(onetrustBtn);
@@ -91,9 +85,7 @@ public class BaseUiTest {
                         .until(ExpectedConditions.invisibilityOfElementLocated(By.id("onetrust-banner-sdk")));
                 return;
             }
-            // 2) Простой баннер с классом .cookie
             if (!driver.findElements(By.cssSelector(".cookie.show, .cookie")).isEmpty()) {
-                // пробуем кнопки с типичными текстами
                 By anyAccept = By.xpath("//*[contains(@class,'cookie')]//button[normalize-space()='OK' or normalize-space()='ОК' or contains(.,'Принять') or contains(.,'Соглас')]");
                 var btns = driver.findElements(anyAccept);
                 if (!btns.isEmpty()) {
@@ -101,7 +93,6 @@ public class BaseUiTest {
                     scrollIntoCenter(btn);
                     jsClick(btn);
                 } else {
-                    // fallback: скрыть баннер через JS, чтобы не перекрывал клики
                     ((JavascriptExecutor) driver).executeScript(
                             "var b=document.querySelector('.cookie.show')||document.querySelector('.cookie'); if(b){b.style.display='none';}"
                     );
@@ -110,12 +101,10 @@ public class BaseUiTest {
         } catch (Exception ignore) {}
     }
 
-    /** Нормализация текста: NBSP → SP, все пробелы/переносы → один пробел */
     protected static String norm(String s) {
         return s == null ? "" : s.replace('\u00A0',' ').replaceAll("\\s+", " ").trim();
     }
 
-    /** Корень блока по заголовку h2 */
     protected WebElement blockRootByTitle(String title) {
         WebElement h2 = scrollToVisible(By.xpath("//h2[normalize-space()='" + title + "']"));
         var roots = h2.findElements(By.xpath("./ancestor::section | ./ancestor::div"));

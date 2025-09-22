@@ -127,7 +127,6 @@ public class MtsTopUpBlockTest extends BaseUiTest {
         assertProceeded();
     }
 
-    /* ================== ЛОКАЛЬНЫЕ ПОМОЩНИКИ (логотипы) ================== */
 
     private boolean checkLogoWithRetry(WebElement root, String[] variants, String humanName) {
         if (hasAnyLogoVariant(root, variants)) return true;
@@ -149,9 +148,7 @@ public class MtsTopUpBlockTest extends BaseUiTest {
         return false;
     }
 
-    /** <img alt*='…'> */
     private boolean hasLogo(WebElement root, String altContains) {
-        // без учёта регистра: alt -> lower-case и искомую строку -> lower-case
         String needle = altContains.toLowerCase();
         return !root.findElements(By.xpath(
                 ".//img[contains(translate(@alt," +
@@ -161,12 +158,7 @@ public class MtsTopUpBlockTest extends BaseUiTest {
         )).isEmpty();
     }
 
-    /**
-     * SVG-логотип:
-     * 1) <svg><title>…</title></svg> — ищем по содержимому title (регистронезависимо)
-     * 2) <use ... href="...visa..." /> или <use ... xlink:href="...visa..." />
-     *    — из-за namespace у xlink используем @*[local-name()='href'] вместо @xlink:href
-     */
+
     private boolean hasSvgTitle(WebElement root, String titleText) {
         String needle = titleText.toLowerCase();
 
@@ -180,7 +172,6 @@ public class MtsTopUpBlockTest extends BaseUiTest {
 
         if (byTitle) return true;
 
-        // ищем <use> с href/xlink:href, не спотыкаясь о namespace
         boolean byUseHref = !root.findElements(By.xpath(
                 ".//*[local-name()='svg']//*[local-name()='use' and " +
                         "contains(translate(@*[local-name()='href']," +
