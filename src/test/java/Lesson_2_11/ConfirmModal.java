@@ -1,4 +1,4 @@
-package Lesson_2_10;
+package Lesson_2_11;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;

@@ -1,5 +1,6 @@
-package Lesson_2_10;
+package Lesson_2_11;
 
+import Lesson_2_11.ConfirmModal;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;

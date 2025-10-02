@@ -1,4 +1,4 @@
-package Lesson_2_10;
+package Lesson_2_11;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ public class ServicesFlowTest extends BaseTest {
         page.open();
         acceptCookiesIfShown();
 
-        TopUpBlock block = page.topUpBlock();
+        Lesson_2_11.TopUpBlock block = page.topUpBlock();
         block.selectPaymentType("Услуги связи");
         block.typePhone("2977777777");
         block.typeAmount("1");

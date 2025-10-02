@@ -1,4 +1,4 @@
-package Lesson_2_10;
+package Lesson_2_11;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;

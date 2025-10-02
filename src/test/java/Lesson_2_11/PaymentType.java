@@ -1,4 +1,4 @@
-package Lesson_2_10;
+package Lesson_2_11;
 
 public enum PaymentType {
     CONNECTION("Услуги связи", "pay-connection"),
